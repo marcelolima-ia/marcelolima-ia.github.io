@@ -1,158 +1,202 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Marcelo | Programador de Jogos</title>
+  <meta charset="UTF-8">
+  <title>Marcelo | Python Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Reset e base */
+    :root {
+      --gold: #d4af37;
+      --black: #0b0b0b;
+      --gray: #1c1c1c;
+      --light-gray: #ccc;
+      --shadow: rgba(212, 175, 55, 0.3);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0a0a0a;
-      color: #f0f0f0;
+    html, body {
+      background: var(--black);
+      color: var(--light-gray);
+      font-family: 'Fira Code', monospace;
       scroll-behavior: smooth;
     }
 
     a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* Paleta */
-    :root {
-      --gold: #d4af37;
-      --dark: #0a0a0a;
-      --gray: #1a1a1a;
-    }
-
-    /* Navbar */
-    header {
-      background: var(--dark);
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--gray);
-    }
-
-    header h1 {
       color: var(--gold);
-      font-size: 1.5rem;
-    }
-
-    nav a {
-      margin-left: 20px;
-      color: #ccc;
+      text-decoration: none;
       transition: color 0.3s;
     }
 
-    nav a:hover {
-      color: var(--gold);
+    a:hover {
+      color: #fff;
     }
 
-    /* Hero */
-    .hero {
+    header {
+      position: relative;
       height: 100vh;
+      background: linear-gradient(135deg, #0b0b0b 60%, #1a1a1a 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 60px 20px;
+      overflow: hidden;
     }
 
-    .hero h2 {
-      font-size: 2.5rem;
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: radial-gradient(circle at center, rgba(212,175,55,0.05) 0%, transparent 70%);
+      animation: rotate 60s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
       color: var(--gold);
       margin-bottom: 10px;
-      animation: fadeIn 2s ease-out;
     }
 
-    .hero p {
+    .hero-content p {
       font-size: 1.2rem;
-      color: #aaa;
       max-width: 600px;
       margin: 0 auto;
-      animation: fadeIn 3s ease-out;
     }
 
-    /* Seções */
+    .console {
+      background: #111;
+      color: var(--gold);
+      font-size: 1rem;
+      border: 1px solid #333;
+      padding: 20px;
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      border-radius: 10px;
+      box-shadow: 0 0 20px var(--shadow);
+      height: 160px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .console::before {
+      content: 'python shell';
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .console-text {
+      white-space: pre;
+      animation: typing 8s steps(40) 1 forwards;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
     section {
       padding: 80px 20px;
       max-width: 1000px;
       margin: 0 auto;
     }
 
-    section h3 {
-      font-size: 2rem;
+    h2 {
       color: var(--gold);
+      font-size: 2rem;
       margin-bottom: 20px;
     }
 
-    .about, .projects {
+    .about {
       opacity: 0;
-      transform: translateY(50px);
+      transform: translateY(40px);
       transition: all 1s ease;
     }
 
-    .about.visible, .projects.visible {
+    .about.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .project-grid {
+    .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
     }
 
-    .project {
+    .card {
       background: var(--gray);
       padding: 20px;
+      border-radius: 12px;
       border: 1px solid #333;
-      border-radius: 8px;
-      transition: transform 0.3s ease, border-color 0.3s;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
-    .project:hover {
-      transform: translateY(-5px);
-      border-color: var(--gold);
+    .card:hover {
+      transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
+      box-shadow: 0 10px 30px var(--shadow);
     }
 
-    /* Rodapé */
+    .card h3 {
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
     footer {
-      background: var(--gray);
-      padding: 40px 20px;
       text-align: center;
+      padding: 40px 20px;
+      background: #0e0e0e;
       color: #777;
       border-top: 1px solid #222;
     }
 
-    /* Animações */
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
+    /* Scroll animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
     }
 
-    /* Responsivo */
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
     @media (max-width: 600px) {
-      .hero h2 {
+      .hero-content h1 {
         font-size: 2rem;
       }
 
-      nav a {
-        margin-left: 10px;
+      .console {
         font-size: 0.9rem;
+        height: 180px;
       }
     }
   </style>
@@ -160,73 +204,66 @@
 <body>
 
   <header>
-    <h1>Marcelo.dev</h1>
-    <nav>
-      <a href="#sobre">Sobre</a>
-      <a href="#projetos">Projetos</a>
-      <a href="#contato">Contato</a>
-    </nav>
+    <div class="hero-content">
+      <h1>Marcelo • Python Developer</h1>
+      <p>Transformando ideias em código com elegância, precisão e criatividade.</p>
+
+      <div class="console">
+        <div class="console-text">
+>>> nome = "Marcelo"\n>>> linguagem = "Python"\n>>> print(f"Olá, meu nome é {nome} e eu programo em {linguagem}!")\nOlá, meu nome é Marcelo e eu programo em Python!
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div>
-        <h2>Olá, eu sou o Marcelo</h2>
-        <p>Programador de jogos recém-formado, apaixonado por tecnologia, criatividade e soluções inteligentes.</p>
+  <section class="about reveal">
+    <h2>Sobre Mim</h2>
+    <p>
+      Sou um programador especializado em Python, com foco em desenvolvimento de jogos e automações.
+      Tenho paixão por lógica, design limpo e soluções elegantes. Acabei de concluir meu curso, e estou
+      buscando oportunidades e desafios reais para crescer profissionalmente.
+    </p>
+  </section>
+
+  <section class="reveal">
+    <h2>Projetos em Destaque</h2>
+    <div class="projects">
+      <div class="card">
+        <h3>Snake Game Python</h3>
+        <p>Clássico jogo da cobrinha com interface Tkinter. Mecânicas simples, código limpo e modular.</p>
       </div>
-    </section>
-
-    <section id="sobre" class="about">
-      <h3>Sobre mim</h3>
-      <p>Sou um desenvolvedor com foco em criação de jogos. Recentemente finalizei meu curso na área de desenvolvimento e estou buscando projetos onde possa aplicar meus conhecimentos e continuar aprendendo. Curto desafios, design minimalista e soluções elegantes.</p>
-    </section>
-
-    <section id="projetos" class="projects">
-      <h3>Meus Projetos</h3>
-      <div class="project-grid">
-        <div class="project">
-          <h4>Jogo 2D Plataforma</h4>
-          <p>Feito com Unity e C#. Um jogo de aventura com mecânicas de física e coleta de itens.</p>
-        </div>
-        <div class="project">
-          <h4>Mini Jogo Web</h4>
-          <p>Desenvolvido em HTML5, CSS e JavaScript. Jogo de lógica com interface simples e responsiva.</p>
-        </div>
-        <div class="project">
-          <h4>RPG por Turnos</h4>
-          <p>Protótipo de RPG com sistema de combate e inventário. Criado como projeto final do curso.</p>
-        </div>
+      <div class="card">
+        <h3>Bot Telegram</h3>
+        <p>Um bot automatizado usando Python + API do Telegram. Envia alertas e interage com usuários.</p>
       </div>
-    </section>
+      <div class="card">
+        <h3>Jogo RPG Terminal</h3>
+        <p>RPG por texto com inventário, combates e evolução. Feito com OOP e sistema de diálogos.</p>
+      </div>
+    </div>
+  </section>
 
-    <section id="contato">
-      <h3>Contato</h3>
-      <p>Você pode entrar em contato comigo por email ou redes sociais:</p>
-      <ul style="list-style: none; padding: 0; margin-top: 10px;">
-        <li>Email: <a href="mailto:seuemail@email.com" style="color: var(--gold)">seuemail@email.com</a></li>
-        <li>GitHub: <a href="https://github.com/seugithub" target="_blank" style="color: var(--gold)">github.com/seugithub</a></li>
-        <li>LinkedIn: <a href="https://linkedin.com/in/seulinkedin" target="_blank" style="color: var(--gold)">linkedin.com/in/seulinkedin</a></li>
-      </ul>
-    </section>
-  </main>
+  <section class="reveal">
+    <h2>Contato</h2>
+    <p>📧 <a href="mailto:marcelo.dev@email.com">marcelo.dev@email.com</a></p>
+    <p>🐍 <a href="https://github.com/seuusuario" target="_blank">github.com/seuusuario</a></p>
+    <p>💼 <a href="https://linkedin.com/in/seulinkedin" target="_blank">linkedin.com/in/seulinkedin</a></p>
+  </section>
 
   <footer>
-    <p>&copy; 2025 Marcelo. Todos os direitos reservados.</p>
+    <p>&copy; 2025 Marcelo | Feito com Python, café e dedicação.</p>
   </footer>
 
   <script>
-    // Animação ao rolar
-    const observer = new IntersectionObserver((entries) => {
+    // Scroll Reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, {
-      threshold: 0.3
-    });
+    }, { threshold: 0.3 });
 
-    document.querySelectorAll('.about, .projects').forEach(el => observer.observe(el));
+    reveals.forEach(r => observer.observe(r));
   </script>
 
 </body>
